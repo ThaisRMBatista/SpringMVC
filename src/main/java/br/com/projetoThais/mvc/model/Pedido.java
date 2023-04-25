@@ -1,9 +1,6 @@
 package br.com.projetoThais.mvc.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +17,9 @@ public class Pedido {
     private String urlProduto;
     private String urlImagem;
     private String descricao;
+
+    @Enumerated(EnumType.STRING)
+    private StatusPedido statusPedido;
 
     public String getNomeProduto() {
         return nomeProduto;
@@ -67,5 +67,13 @@ public class Pedido {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public StatusPedido getStatusPedido() {
+        return statusPedido;
+    }
+
+    public void setStatusPedido(StatusPedido status) {
+        this.statusPedido = status;
     }
 }

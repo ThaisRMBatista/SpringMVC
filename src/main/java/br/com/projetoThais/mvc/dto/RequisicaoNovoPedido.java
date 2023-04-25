@@ -1,6 +1,7 @@
 package br.com.projetoThais.mvc.dto;
 
 import br.com.projetoThais.mvc.model.Pedido;
+import br.com.projetoThais.mvc.model.StatusPedido;
 import jakarta.validation.constraints.NotBlank;
 
 public class RequisicaoNovoPedido {
@@ -51,6 +52,7 @@ public class RequisicaoNovoPedido {
         pedido.setUrlImagem(urlImagem);
         pedido.setUrlProduto(urlProduto);
         pedido.setDescricao(descricao);
+        pedido.setStatusPedido(StatusPedido.AGUARDANDO);
 
         return pedido;
     }
