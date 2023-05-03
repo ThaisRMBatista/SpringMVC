@@ -28,7 +28,7 @@ public class HomeController {
     }
 
     @GetMapping("/{statusPedido}")
-    public String aguardando(@PathVariable("statusPedido") String statusPedido, Model model) {
+    public String porStatus(@PathVariable("statusPedido") String statusPedido, Model model) {
         List<Pedido> pedidos = pedidoRepository.findByStatusPedido(StatusPedido.valueOf(statusPedido.toUpperCase()));
         model.addAttribute("pedidos", pedidos);
         model.addAttribute("statusPedido", statusPedido);
