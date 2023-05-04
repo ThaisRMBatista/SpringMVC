@@ -4,8 +4,6 @@ import br.com.projetoThais.mvc.model.Pedido;
 import br.com.projetoThais.mvc.model.StatusPedido;
 import br.com.projetoThais.mvc.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,21 +15,29 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/home")
-public class HomeController {
+@RequestMapping("usuario")
+public class UsuarioController {
 
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    @GetMapping
+    @GetMapping("pedidos")
     public String home(Model model, Principal principal) {
-
-        Sort sort = Sort.by("dataDeEntrega").descending();
-        PageRequest paging = PageRequest.of(0, 10, sort);
-
-        List<Pedido> pedidos = pedidoRepository.findByStatusPedido(StatusPedido.ENTREGUE, paging);
+        List<Pedido> pedidos = pedidoRepository.findAllByUsuario(principal.getName());
         model.addAttribute("pedidos", pedidos);
-        return "home";
+        return "usuario/home";
     }
 
+    @GetMapping("pedidos/{statusPedido}")
+    public String porStatus(@PathVariable("statusPedido") String statusPedido, Model model, Principal principal) {
+        List<Pedido> pedidos = pedidoRepository.findByStatusPedidoAndUser(StatusPedido.valueOf(statusPedido.toUpperCase()),principal.getName());
+        model.addAttribute("pedidos", pedidos);
+        model.addAttribute("statusPedido", statusPedido);
+        return "usuario/home";
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String onError(){
+        return "redirect:/usuario/home";
+    }
 }

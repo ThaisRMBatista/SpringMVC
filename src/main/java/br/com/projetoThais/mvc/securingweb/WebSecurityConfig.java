@@ -27,13 +27,16 @@ public class WebSecurityConfig  {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .anyRequest().authenticated()
+                .requestMatchers("/home/**")
+                    .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin(form -> form
                     .loginPage("/login")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/usuario/pedidos", true)
                     .permitAll())
-                .logout(logout -> logout.logoutUrl("/logout"))
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/home"))
                 .csrf().disable();
 
         return http.build();
